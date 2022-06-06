@@ -50,7 +50,11 @@ def run_simulation(initial_bucket_size=0, average_daily_input=0, days_to_run=0):
 
     gb_months = bytes_to_gigabytes(cumulative_byte_hours) / 24
     total_cost = gb_months_to_cost(gb_months)
-    print("Bucket storage size after {} days: {} GB\nTotal GB-Months: {}\nTotal Cost: £{}".format(days_to_run,int(current_capacity),gb_months,total_cost))
+    print("Bucket storage size after {} days: {} GB\nTotal GB-Months: {}\nTotal Cost: £{}".format(
+        days_to_run,
+        int(current_capacity),
+        gb_months,total_cost
+    ))
 
 if __name__ == "__main__":
     [initial_bucket_size,daily_input,days_to_run] = [int(arg) for arg in sys.argv[1:]]
