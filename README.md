@@ -1,4 +1,4 @@
-# AWS_Cost_Projections
+# AWS Cost Projections
 Repository to store scripts that help you estimate AWS costs
 
 ## S3_Cost_Projections.py
