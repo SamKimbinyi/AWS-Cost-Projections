@@ -27,7 +27,7 @@ def gb_months_to_cost(gb_months):
             quantity = gb_months
             price = 0.021
         accounted_for += quantity
-        cost += quantity * 0.023
+        cost += quantity * price
         gb_months -= quantity
     return c.convert(cost, 'USD', 'GBP')
 
