@@ -32,7 +32,7 @@ def gb_months_to_cost(gb_months):
     return c.convert(cost, 'USD', 'GBP')
 
 
-def run_simulation(initial_bucket_size=0, average_daily_input=0, days_to_run=0):
+def run_simulation(initial_bucket_size=0, average_daily_input=0, average_daily_output=0,days_to_run=0):
     """Run a simulation to determine S3 bucket costs.
 
     Keyword arguments:
@@ -46,7 +46,7 @@ def run_simulation(initial_bucket_size=0, average_daily_input=0, days_to_run=0):
 
     for day in range(days_to_run):
         cumulative_byte_hours += gigabytes_to_bytes(current_capacity) * 24
-        current_capacity += average_daily_input
+        current_capacity += average_daily_input - average_daily_output
 
     gb_months = bytes_to_gigabytes(cumulative_byte_hours) / 24
     total_cost = gb_months_to_cost(gb_months)
@@ -57,5 +57,5 @@ def run_simulation(initial_bucket_size=0, average_daily_input=0, days_to_run=0):
     ))
 
 if __name__ == "__main__":
-    [initial_bucket_size,daily_input,days_to_run] = [int(arg) for arg in sys.argv[1:]]
-    run_simulation(initial_bucket_size, daily_input, days_to_run)
+    [initial_bucket_size,daily_input,daily_output,days_to_run] = [int(arg) for arg in sys.argv[1:]]
+    run_simulation(initial_bucket_size, daily_input, daily_output, days_to_run)
