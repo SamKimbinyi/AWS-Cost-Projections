@@ -1,23 +1,34 @@
-from currency_converter import CurrencyConverter
 import sys
 
-# https://pypi.org/project/CurrencyConverter/
+from currency_converter import CurrencyConverter
+
 c = CurrencyConverter()
 
 
 def gigabytes_to_bytes(quantity: float) -> float:
-    """Takes a quantity in GB and returns it's equivalent number of Bytes."""
+    """
+    :param quantity: GB quantity
+    :returns: The byte conversion of the GB input
+    """
     return quantity * pow(1024, 3)
 
 
 def bytes_to_gigabytes(quantity: float) -> float:
-    """Takes a quantity in Bytes and returns it's equivalent number of GB."""
+    """
+
+    :param quantity: Byte quantity:
+    :return: The GB conversion of the Byte input
+    """
     return quantity / pow(1024, 3)
 
 
 def gb_months_to_cost(gb_months: float) -> float:
-    """Takes an amount of GB Months and returns the AWS cost."""
-    # see https://aws.amazon.com/s3/pricing/
+    """
+    see https://aws.amazon.com/s3/pricing/
+
+    :param gb_months: The timeframe in months to cost for
+    :return: The total cost for the timeframe
+    """
     cost = 0
     accounted_for = 0
     while gb_months:
@@ -39,10 +50,10 @@ def gb_months_to_cost(gb_months: float) -> float:
 def run_simulation(initial_bucket_size=0, average_daily_input=0, average_daily_output=0, days_to_run=0):
     """Run a simulation to determine S3 bucket costs.
 
-    Keyword arguments:
-    initial_bucket_size -- initial volume of data in bucket. (GB)
-    average_daily_input -- data to be added to S3 bucket per day (GB)
-    days_to_run -- number of days to simulate costs for.
+
+    :param  initial_bucket_size: initial volume of data in bucket. (GB)
+    :param average_daily_input: data to be added to S3 bucket per day (GB)
+    :param  days_to_run: number of days to simulate costs for.
     """
     # see https://github.com/awsdocs/amazon-s3-developer-guide/blob/master/doc_source/aws-usage-report-understand.md
     cumulative_byte_hours = 0
@@ -54,11 +65,8 @@ def run_simulation(initial_bucket_size=0, average_daily_input=0, average_daily_o
 
     gb_months = bytes_to_gigabytes(cumulative_byte_hours) / 24
     total_cost = gb_months_to_cost(gb_months)
-    print("Bucket storage size after {} days: {} GB\nTotal GB-Months: {}\nTotal Cost: £{}".format(
-        days_to_run,
-        int(current_capacity),
-        gb_months, total_cost
-    ))
+    print(f"Bucket storage size after {days_to_run} days: {int(current_capacity)} GB\n"
+          f"Total GB-Months: {gb_months}\nTotal Cost: £{total_cost}")
 
 
 if __name__ == "__main__":
