@@ -1,27 +1,31 @@
 from currency_converter import CurrencyConverter
 import sys
+
 # https://pypi.org/project/CurrencyConverter/
 c = CurrencyConverter()
 
-def gigabytes_to_bytes(quantity):
+
+def gigabytes_to_bytes(quantity: float) -> float:
     """Takes a quantity in GB and returns it's equivalent number of Bytes."""
-    return quantity * pow(1024,3)
+    return quantity * pow(1024, 3)
 
-def bytes_to_gigabytes(quantity):
+
+def bytes_to_gigabytes(quantity: float) -> float:
     """Takes a quantity in Bytes and returns it's equivalent number of GB."""
-    return quantity / pow(1024,3)
+    return quantity / pow(1024, 3)
 
-def gb_months_to_cost(gb_months):
+
+def gb_months_to_cost(gb_months: float) -> float:
     """Takes an amount of GB Months and returns the AWS cost."""
     # see https://aws.amazon.com/s3/pricing/
     cost = 0
     accounted_for = 0
-    while(gb_months):
+    while gb_months:
         if accounted_for < 50 * 1000:
-            quantity = min(50*1000,gb_months)
+            quantity = min(50 * 1000, gb_months)
             price = 0.023
         elif accounted_for < 500 * 1000:
-            quantity = min(450*1000,gb_months)
+            quantity = min(450 * 1000, gb_months)
             price = 0.022
         else:
             quantity = gb_months
@@ -32,7 +36,7 @@ def gb_months_to_cost(gb_months):
     return c.convert(cost, 'USD', 'GBP')
 
 
-def run_simulation(initial_bucket_size=0, average_daily_input=0, average_daily_output=0,days_to_run=0):
+def run_simulation(initial_bucket_size=0, average_daily_input=0, average_daily_output=0, days_to_run=0):
     """Run a simulation to determine S3 bucket costs.
 
     Keyword arguments:
@@ -53,9 +57,10 @@ def run_simulation(initial_bucket_size=0, average_daily_input=0, average_daily_o
     print("Bucket storage size after {} days: {} GB\nTotal GB-Months: {}\nTotal Cost: £{}".format(
         days_to_run,
         int(current_capacity),
-        gb_months,total_cost
+        gb_months, total_cost
     ))
 
+
 if __name__ == "__main__":
-    [initial_bucket_size,daily_input,daily_output,days_to_run] = [int(arg) for arg in sys.argv[1:]]
+    [initial_bucket_size, daily_input, daily_output, days_to_run] = [int(arg) for arg in sys.argv[1:]]
     run_simulation(initial_bucket_size, daily_input, daily_output, days_to_run)
